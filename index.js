@@ -30,9 +30,9 @@ app.get("/api", function (req, res) {
 });
 
 app.get("/api/:date?", function (req, res) {
+  let date_string = req.params.date;
   if (new Date(date_string).toUTCString() === "Invalid Date") return res.json({ error: "Invalid Date" });
 
-  let date_string = req.params.date;
   let nUnixDate = new Date(date_string);
 
   if (req.params.date.includes("-")) {
