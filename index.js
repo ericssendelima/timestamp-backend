@@ -3,8 +3,8 @@
 
 // init project
 import express from "express";
-import cors from 'cors';
-import path from 'path';
+import cors from "cors";
+import path from "path";
 
 const __dirname = path.resolve();
 const app = express();
@@ -32,15 +32,30 @@ app.get("/api", function (req, res) {
 app.get("/api/:date?", function (req, res) {
   let date_string = req.params.date;
   console.log("Data recebida:", date_string);
+
+  // Verificar se a data contém ", GMT" e removê-la
+  if (date_string && date_string.includes(", GMT")) {
+    date_string = date_string.replace(/, GMT$/, "");
+    // Verificando se a data é válida após a limpeza
+    if (new Date(date_string).toUTCString() === "Invalid Date") {
+      return res.json({ error: "Invalid Date" });
+    }
+    let nUnixDate = new Date(date_string);
+
+    let utcDate = new Date(date_string).toUTCString();
+    return res.json({ unix: +nUnixDate, utc: utcDate });
+  }
+
   let nUnixDate = new Date(date_string);
 
   if (req.params.date.includes("-")) {
     //gerando uma chave unix a partir de uma data
 
     let utcDate = new Date(date_string).toUTCString();
-    if (new Date(date_string).toUTCString() === "Invalid Date") return res.json({ error: "Invalid Date" });
+    if (new Date(date_string).toUTCString() === "Invalid Date")
+      return res.json({ error: "Invalid Date" });
 
-    res.json({ unix: +nUnixDate, utc: utcDate });
+    return res.json({ unix: +nUnixDate, utc: utcDate });
   } else {
     let cUnix = parseInt(date_string);
     let utcUnixDate = new Date(parseInt(date_string)).toUTCString();
@@ -48,7 +63,7 @@ app.get("/api/:date?", function (req, res) {
     if (utcUnixDate === "Invalid Date")
       return res.json({ error: "Invalid Date" });
 
-    res.json({ unix: cUnix, utc: utcUnixDate });
+    return res.json({ unix: cUnix, utc: utcUnixDate });
   }
 });
 
