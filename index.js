@@ -36,13 +36,13 @@ app.get("/api/:date", function (req, res) {
   if (req.params.date.includes("-")) {
     //gerando uma chave unix a partir de uma data
 
-    let utcDate = new Date(req.params.date).toUTCString();
+    let utcDate = new Date(date_string).toUTCString();
     if (utcDate === "Invalid Date") return res.json({ error: "Invalid Date" });
 
     res.json({ unix: +nUnixDate, utc: utcDate });
   } else {
     let cUnix = parseInt(date_string);
-    let utcUnixDate = new Date(cUnix).toUTCString();
+    let utcUnixDate = new Date(parseInt(date_string)).toUTCString();
 
     if (utcUnixDate === "Invalid Date")
       return res.json({ error: "Invalid Date" });
