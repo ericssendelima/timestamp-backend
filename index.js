@@ -29,7 +29,7 @@ app.get("/api", function (req, res) {
   res.json({ unix: cUnix, utc: date });
 });
 
-app.get("/api/:date", function (req, res) {
+app.get("/api/:date?", function (req, res) {
   let date_string = req.params.date;
   let nUnixDate = new Date(date_string);
 
