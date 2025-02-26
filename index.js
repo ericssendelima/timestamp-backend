@@ -31,7 +31,7 @@ app.get("/api", function (req, res) {
 
 app.get("/api/:date?", function (req, res) {
   let date_string = req.params.date;
-
+  console.log("Data recebida:", date_string);
   let nUnixDate = new Date(date_string);
 
   if (req.params.date.includes("-")) {
